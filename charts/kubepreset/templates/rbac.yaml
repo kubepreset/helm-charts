@@ -1,0 +1,56 @@
+{{- if .Values.rbac.create -}}
+{{/*
+Part of Service Binding RBAC extension as per the specification
+https://github.com/k8s-service-bindings/spec#role-based-access-control-rbac
+*/}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "kubepreset.clusterRoleName" . }}
+  labels:
+    {{- include "kubepreset.labels" . | nindent 4 }}
+  {{- with .Values.rbac.clusterRole.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+aggregationRule:
+  clusterRoleSelectors:
+  - matchLabels:
+      service.binding/controller: "true"
+rules: [] # The control plane automatically fills in the rules
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "kubepreset.clusterRoleName" . }}-insecure
+  labels:
+    {{- include "kubepreset.labels" . | nindent 4 }}
+    service.binding/controller: "true"
+  {{- with .Values.rbac.clusterRole.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "kubepreset.clusterRoleBindingName" . }}
+  labels:
+    {{- include "kubepreset.labels" . | nindent 4 }}
+  {{- with .Values.rbac.clusterRoleBinding.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "kubepreset.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "kubepreset.clusterRoleName" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end -}}

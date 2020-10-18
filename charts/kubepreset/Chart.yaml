@@ -1,0 +1,71 @@
+apiVersion: v2
+name: kubepreset
+description: "KubePreset: Streamline Application Connectivity with Backing Services"
+icon: https://avatars0.githubusercontent.com/u/70762365
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: "0.1.0"
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+appVersion: "v0.1.0"
+
+keywords:
+  - service-binding
+  - service
+  - backing-service
+  - application
+  - operator
+
+annotations:
+  artifacthub.io/images: |
+    - name: kubepreset
+      image: quay.io/kubepreset/kubepreset:0.1.0
+  artifacthub.io/crds: |
+    - kind: ServiceBinding
+      version: v1alpha2
+      name: servicebindings.service.binding
+      displayName: Service Binding
+      description: Desired state of application connectivity with the backing service
+  artifacthub.io/crdsExamples: |
+    - apiVersion: service.binding/v1alpha2
+      kind: ServiceBinding
+      metadata:
+        name: demo-service
+      spec:
+        application:
+          apiVersion: apps/v1
+          kind:       Deployment
+          name:       demo-app
+        service:
+          apiVersion: com.example/v1alpha1
+          kind:       DemoService
+          name:       prod-demo-service
+      status:
+        conditions:
+        - type:   Ready
+          status: 'True'
+  artifacthub.io/links: |
+    - name: Website
+      url: https://kubepreset.dev
+    - name: Primary Git Repo
+      url: https://github.com/kubepreset/kubepreset
+    - name: Charts Git Repo
+      url: https://github.com/kubepreset/helm-charts
+  artifacthub.io/maintainers: |
+    - name: "Baiju Muthukadan"
+      email: baiju.m.mail@gmail.com
+  artifacthub.io/operator: "true"
+  artifacthub.io/operatorCapabilities: Basic Install
