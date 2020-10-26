@@ -30,9 +30,6 @@ keywords:
   - operator
 
 annotations:
-  artifacthub.io/images: |
-    - name: kubepreset
-      image: quay.io/kubepreset/kubepreset:0.1.0
   artifacthub.io/crds: |
     - kind: ServiceBinding
       version: v1alpha2
