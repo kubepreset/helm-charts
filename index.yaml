@@ -26,6 +26,60 @@ entries:
             conditions:
             - type:   Ready
               status: 'True'
+      artifacthub.io/links: |
+        - name: Website
+          url: https://kubepreset.dev
+        - name: Primary Git Repo
+          url: https://github.com/kubepreset/kubepreset
+        - name: Charts Git Repo
+          url: https://github.com/kubepreset/helm-charts
+      artifacthub.io/maintainers: |
+        - name: "Baiju Muthukadan"
+          email: baiju.m.mail@gmail.com
+      artifacthub.io/operator: "true"
+      artifacthub.io/operatorCapabilities: Basic Install
+    apiVersion: v2
+    appVersion: v0.2.0
+    created: "2020-11-02T09:24:38.524023474Z"
+    description: 'KubePreset: Streamline Application Connectivity with Backing Services'
+    digest: 2f618e30e99995034fbc53ce8ee026fdc913f20406dc399510c00f03b8e17cbe
+    icon: https://avatars0.githubusercontent.com/u/70762365
+    keywords:
+    - service-binding
+    - service
+    - backing-service
+    - application
+    - operator
+    name: kubepreset
+    type: application
+    urls:
+    - https://github.com/kubepreset/helm-charts/releases/download/kubepreset-0.2.0/kubepreset-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/crds: |
+        - kind: ServiceBinding
+          version: v1alpha2
+          name: servicebindings.service.binding
+          displayName: Service Binding
+          description: Desired state of application connectivity with the backing service
+      artifacthub.io/crdsExamples: |
+        - apiVersion: service.binding/v1alpha2
+          kind: ServiceBinding
+          metadata:
+            name: demo-service
+          spec:
+            application:
+              apiVersion: apps/v1
+              kind:       Deployment
+              name:       demo-app
+            service:
+              apiVersion: com.example/v1alpha1
+              kind:       DemoService
+              name:       prod-demo-service
+          status:
+            conditions:
+            - type:   Ready
+              status: 'True'
       artifacthub.io/images: |
         - name: kubepreset
           image: quay.io/kubepreset/kubepreset:0.1.0
